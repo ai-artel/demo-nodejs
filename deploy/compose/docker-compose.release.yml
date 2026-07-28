@@ -1,10 +1,15 @@
 services:
   demo-nodejs:
-    image: ${IMAGE_REF:?IMAGE_REF must be set, e.g. ghcr.io/ai-artel/demo-nodejs:v1.0.0}
+    image: ${IMAGE_REF:?IMAGE_REF must be set, e.g. ghcr.io/ai-artel/demo-nodejs:0.0.2}
     container_name: demo-nodejs
     restart: unless-stopped
-    env_file:
-      - deployment.env
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3000}
+      DISABLE_METRICS: ${DISABLE_METRICS:-false}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-true}
+      TRUST_PROXY: ${TRUST_PROXY:-true}
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET must be set}
     ports:
       - "${HOST_PORT:-3000}:3000"
     read_only: true
