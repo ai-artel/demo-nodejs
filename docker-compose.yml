@@ -1,0 +1,28 @@
+# Local development manifest. Production delivery uses
+# deploy/compose/docker-compose.release.yml via GitHub Actions + Dokploy.
+services:
+  demo-nodejs:
+    image: node:22-alpine
+    container_name: demo-nodejs-dev
+    working_dir: /app
+    ports:
+      - "${DEMO_NODEJS_DEV_PORT:-8110}:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      SESSION_COOKIE_SECURE: "false"
+      TRUST_PROXY: "false"
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app
+      - demo_nodejs_node_modules_volume:/app/node_modules
+    command: >
+      sh -c "
+        test -d /app/node_modules || npm install &&
+        npm run watch
+      "
+
+volumes:
+  demo_nodejs_node_modules_volume:
+    name: demo_nodejs_node_modules_volume

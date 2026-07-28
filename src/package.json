@@ -1,0 +1,60 @@
+{
+  "name": "demo-nodejs",
+  "description": "Node.js Express app for GitHub Actions + Dokploy deployment demos",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ai-artel/demo-nodejs.git"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node --expose_gc server.mjs",
+    "start-bg": "node server.mjs &",
+    "watch": "nodemon",
+    "test-report": "httpyac tests/base-tests.http --all --junit > test-results.xml",
+    "test": "httpyac tests/base-tests.http --all --output short",
+    "lint": "prettier --check **/*.mjs *.mjs",
+    "lint-fix": "eslint . --fix && prettier --write **/*.mjs *.mjs"
+  },
+  "dependencies": {
+    "axios": "^1.16.0",
+    "connect-redis": "^7.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-prometheus-middleware": "^1.2.0",
+    "express-session": "^1.18.0",
+    "mongodb": "^6.9.0",
+    "morgan": "^1.10.0",
+    "redis": "^4.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.12.0",
+    "eslint-config-prettier": "^9.1.0",
+    "httpyac": "^6.15.1",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  },
+  "overrides": {
+    "form-data": "4.0.6",
+    "path-to-regexp": "0.1.13",
+    "jws": "3.2.3",
+    "jake": {
+      "minimatch": {
+        ".": "3.1.4",
+        "brace-expansion": "1.1.16"
+      }
+    },
+    "filelist": {
+      "minimatch": {
+        ".": "5.1.8",
+        "brace-expansion": "2.1.2"
+      }
+    }
+  }
+}

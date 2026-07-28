@@ -1,0 +1,16 @@
+services:
+  demo-nodejs:
+    image: ${IMAGE_REF:?IMAGE_REF must be set, e.g. ghcr.io/ai-artel/demo-nodejs:v1.0.0}
+    container_name: demo-nodejs
+    restart: unless-stopped
+    env_file:
+      - deployment.env
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

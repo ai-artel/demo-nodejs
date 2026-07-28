@@ -1,0 +1,26 @@
+import http from "k6/http";
+import { check, sleep } from "k6";
+
+// Advisory-only performance smoke test: exercises the health/readiness/info
+// endpoints under light concurrent load. No thresholds are defined here on
+// purpose -- this never fails the build regardless of the numbers observed;
+// the exported summary is for human review, not a pass/fail gate.
+export const options = {
+    vus: 5,
+    duration: "20s",
+};
+
+const BASE_URL = __ENV.BASE_URL || "http://localhost:3000";
+
+export default function () {
+    const healthRes = http.get(`${BASE_URL}/healthz`);
+    check(healthRes, { "healthz status is 200": (r) => r.status === 200 });
+
+    const readyRes = http.get(`${BASE_URL}/readyz`);
+    check(readyRes, { "readyz status is 200": (r) => r.status === 200 });
+
+    const infoRes = http.get(`${BASE_URL}/info`);
+    check(infoRes, { "info status is 200": (r) => r.status === 200 });
+
+    sleep(1);
+}
